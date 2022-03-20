@@ -53,15 +53,22 @@ public class Convert {
         }
         else if (razr == 3) {
             result += repeatStr(templateRim[razr][0], (digit % 5));
-
-        } else if (digit % 10 > 5) {
-            if (digit % 5 > 3) result += templateRim[razr][3];
+        }
+        else if (digit % 10 > 5) {
+            if (digit % 5 > 3) {
+                result += templateRim[razr][3];
+            }
             else result += templateRim[razr][2] + repeatStr(templateRim[razr][0], (digit % 5));
-
-        } else if (digit % 5 == 0) result += templateRim[razr][2];
-
-        else if (digit % 5 > 3) result += templateRim[razr][1];
-        else result += repeatStr(templateRim[razr][0], (digit % 5));
+        }
+        else if (digit % 5 == 0) {
+            result += templateRim[razr][2];
+        }
+        else if (digit % 5 > 3) {
+            result += templateRim[razr][1];
+        }
+        else {
+            result += repeatStr(templateRim[razr][0], (digit % 5));
+        }
 
         return result;
     }

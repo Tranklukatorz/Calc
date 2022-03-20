@@ -18,7 +18,6 @@ public class Calculations {
                 break;
             case '/':
                 z = (long) a / b;
-
         }
 
         return z;

@@ -1,11 +1,10 @@
 package check;
 
 public class Check {
-    private static final Character rim[] = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
+    private static final Character[] rim = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
     private String resultChek;
 
     public Check(){
-
     }
 
     Check(String strIn) {
@@ -22,7 +21,7 @@ public class Check {
 
     private String mainCheck(String str_in) {
         String strOut = "Unknw-err";
-        String strCheck[] = str_in.split(" ");
+        String[] strCheck = str_in.split(" ");
 
         if (strCheck.length != 3) {
             strOut = "oper-err";
@@ -45,16 +44,16 @@ public class Check {
         Character[] template = {'*', '/', '+', '-'};
         char temPlateChar = str.charAt(0);
 
-        if (str.length() != 1) {
-            flag = false;
-        }
-        else {
+        if (str.length() == 1) {
             for (Character i : template) {
                 if (i.equals(temPlateChar)) {
                     flag = true;
                 }
             }
         }
+        else {
+                flag = false;
+            }
 
         return flag;
     }
