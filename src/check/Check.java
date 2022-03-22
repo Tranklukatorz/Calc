@@ -1,5 +1,7 @@
 package check;
 
+import convert.Convert;
+
 public class Check {
     private static final Character[] rim = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
     private String resultChek;
@@ -20,24 +22,44 @@ public class Check {
     }
 
     private String mainCheck(String str_in) {
-        String strOut = "Unknw-err";
+        String strOut = "Unknow-err";
         String[] strCheck = str_in.split(" ");
 
-        if (strCheck.length != 3) {
-            strOut = "oper-err";
+        if (strCheck.length < 3 ){
+            strOut = "mat-err-oper";
+        }
+        else if (strCheck.length > 3) {
+            strOut = "oper-err-format";
         }
         else if (!(checkOperat(strCheck[1]))) {
             strOut = "oper-err";
         }
-        else if (checkInt(strCheck[0]) && checkInt(strCheck[2])){
-            strOut = "int";
-        }
         else if (checkRim(strCheck[0]) && checkRim(strCheck[2])){
-            strOut = "rim";
+            if ( (Convert.convert(strCheck[0]) < 11 && Convert.convert(strCheck[0]) > 0) && (Convert.convert(strCheck[2]) < 11 && Convert.convert(strCheck[2]) > 0)){
+                strOut = "rim";
+            }
+            else {
+                strOut = "rim-range-err";
+            }
+        }
+        else if (checkInt(strCheck[0]) && checkInt(strCheck[2])){
+            if ( (Integer.parseInt(strCheck[0]) < 11 && Integer.parseInt(strCheck[0]) > 0) && (Integer.parseInt(strCheck[2]) < 11 && Integer.parseInt(strCheck[2]) > 0)){
+                strOut = "int";
+            }
+            else {
+                strOut = "Arab-range-err";
+            }
+        }
+        else if ((checkInt(strCheck[0]) && checkRim(strCheck[2])) || (checkRim(strCheck[0]) && checkInt(strCheck[2]))){
+            strOut = "int-rim-err";
+        }
+        else if (strCheck[0].length() != 0  && strCheck[2].length() != 0){
+            strOut = "str-err";
         }
 
         return strOut;
     }
+
 
     private Boolean checkOperat(String str) {
         boolean flag = false;
@@ -51,10 +73,6 @@ public class Check {
                 }
             }
         }
-        else {
-                flag = false;
-            }
-
         return flag;
     }
 
@@ -63,7 +81,8 @@ public class Check {
 
         try {
             Integer.parseInt(str);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             flag = false;
         }
 
@@ -75,7 +94,9 @@ public class Check {
 
         for (int i = 0; i < str.length(); ++i) {
             for (int j = 0; j < rim.length; ++j) {
-                if (rim[j].equals(str.charAt(i))) count += 1;
+                if (rim[j].equals(str.charAt(i))) {
+                    count += 1;
+                }
             }
         }
 

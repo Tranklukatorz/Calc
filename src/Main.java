@@ -3,18 +3,19 @@ import convert.Convert;
 import java.util.Scanner;
 
 import static calculator.Calculations.calc;
+import static err.Err.err;
 
 public class Main {
 
     public static void main(String[] args) {
         String stroka;
         String[] strCheck;
-        long rez;
+        int rez;
         Check test = new Check();
         java.util.Scanner in = new Scanner(System.in);
-        System.out.println("Добро пожаловать в приложение калькулятор\nКалькулятор работает с арабскими и римскими числами\n" +
-                "Арабские вводимые числа и результат их вычислений должны укладываться в диапазон от -2,147,483,648 до 2,147,483,647\n" +
-                "Римские числа и результат их вычислений должны быть больше не меньше нуля и не более MMM (3,000)\n" +
+        System.out.println("Добро пожаловать в приложение калькулятор\n"+
+                "Калькулятор работает с арабскими и римскими числами\n" +
+                "Вводимые числа должны лежать в промежутке от 1 до 10\nИ от I до X для римских - " +
                 "Римские числа - 'I'-1; 'V'-5;  'X'-10; 'L'-50; 'C'-100; 'D'-500; 'M'-1000");
 
         while (true) {
@@ -23,30 +24,27 @@ public class Main {
             strCheck = stroka.split(" ");
             test.setStrIn(stroka);
 
-            if (test.getResult().equals("Unknw-err")) {
-                throw new RuntimeException("\nОперанды должны быть целыми числами одной системы исчесления, и быть в диапазоне от -2,147,483,648 до 2,147,483,647 для арабских чисел. " +
-                        " И от I до MMM для римских");
-            }
-
-            else if (test.getResult().equals("oper-err")) {
-                throw new RuntimeException("Не корректный формат ввода. Корректный - 'A (+ - / *) B' где в место скобок указывается 1  из перечисленных операторов");
+            if (!(test.getResult().equals("rim") || test.getResult().equals("int"))){
+                err(test.getResult());
+                break;
             }
 
             else if (test.getResult().equals("int")) {
                 rez = calc(Integer.parseInt(strCheck[0]), strCheck[1], Integer.parseInt(strCheck[2]));
-                if (Integer.MIN_VALUE < rez && rez < Integer.MAX_VALUE) {
-                    System.out.println(rez);
-                }
-                else throw new RuntimeException("Результат вычеслений должен лежать в диапазоне от -2,147,483,648 до 2,147,483,647");
+                System.out.println(rez);
             }
 
             else if (test.getResult().equals("rim")) {
                 rez = calc (Convert.convert(strCheck[0]), strCheck[1], Convert.convert(strCheck[2]));
-                if (rez > 0 && rez <= 3000) {
+                if (rez > 0) {
                     System.out.println(Convert.convert(rez));
                 }
-                else throw new RuntimeException("Для римских чисел результат вычеслений не может быть отрицательным и не должен привышать MMM(3000)");
+                else {
+                    err("throws Exception //т.к. в римской системе нет отрицательных чисел");
+                    break;
+                }
             }
         }
+        in.close();
     }
 }

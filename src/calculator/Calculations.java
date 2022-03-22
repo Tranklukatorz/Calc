@@ -2,9 +2,9 @@ package calculator;
 
 public class Calculations {
 
-     public static long calc(int a, String inStr, int b) {
+     public static int calc(int a, String inStr, int b) {
         char operac = inStr.charAt(0);
-        long z = 0;
+        int z = 0;
 
         switch (operac) {
             case '+':
@@ -14,10 +14,10 @@ public class Calculations {
                 z = a - b;
                 break;
             case '*':
-                z = (long)a * b;
+                z = a * b;
                 break;
             case '/':
-                z = (long) a / b;
+                z = (int) (a / b);
         }
 
         return z;

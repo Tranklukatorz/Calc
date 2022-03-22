@@ -1,6 +1,7 @@
 package convert;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Convert {
     private static final String[][] templateRim = new String[][]{
@@ -10,7 +11,7 @@ public class Convert {
             {"M", "M", "M", "M"},
     };
 
-    private static final HashMap<Character, Integer> rimToArab = new HashMap<Character, Integer>();
+    private static final Map<Character, Integer> rimToArab = new HashMap<Character, Integer>();
     static {
         rimToArab.put('I', 1);
         rimToArab.put('V', 5);
@@ -20,7 +21,7 @@ public class Convert {
         rimToArab.put('D', 500);
         rimToArab.put('M', 1000);
     }
-    public static String convert(long cifra) {
+    public static String convert(int cifra) {
         return convertToRim(cifra);
     }
 
@@ -28,21 +29,21 @@ public class Convert {
         return convertToArb(str);
     }
 
-    private static String convertToRim(long number) {
+    private static String convertToRim(int number) {
         int index;
         int rank;
         int digit;
-        String rez = "";
-        String numbStr = Long.toString(number);
+        StringBuilder rez = new StringBuilder();
+        String numbStr = Integer.toString(number);
 
         for (int i = numbStr.length(); 0 < i; --i) {
             rank = i - 1;
             index = numbStr.length() - i;
             digit = Character.getNumericValue(numbStr.charAt(index));
-            rez += oneNumberToRim(digit, rank);
+            rez.append(oneNumberToRim(digit, rank));
         }
 
-        return rez;
+        return rez.toString();
     }
 
     private static String oneNumberToRim(int digit, int razr) {
@@ -75,9 +76,11 @@ public class Convert {
 
     private static String repeatStr(String str, int val) {
         String tmp = str;
+        StringBuilder strBuilder = new StringBuilder(str);
         for (int i = 1; i < val; ++i) {
-            str += tmp;
+            strBuilder.append(tmp);
         }
+        str = strBuilder.toString();
 
         return str;
     }
